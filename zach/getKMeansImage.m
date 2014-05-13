@@ -3,7 +3,11 @@ function [ newSegImage ] = getKMeansImage( image1 )
 %   Detailed explanation goes here
 
 [indices,cluster] = kmeans(image1(:),2);
-newSegImage = reshape(double((indices==2)),size(image1));
+biggerIndex = 1;
+if(cluster(1)<cluster(2))
+    biggerIndex = 2;
+end
+newSegImage = reshape(double((indices==biggerIndex)),size(image1));
 
 %{
 k=3;
