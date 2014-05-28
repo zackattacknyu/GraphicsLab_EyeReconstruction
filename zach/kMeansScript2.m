@@ -1,5 +1,7 @@
 image1 = im2double(imread('rabbitImages/image1.jpg'));
 
+%IMPORTANT: ADD CODE IN TO SMOOTH THE IMAGE FIRST
+
 image1Size = size(image1);
 height = image1Size(1);
 width = image1Size(2);
