@@ -1,6 +1,8 @@
 image1 = im2double(imread('rabbitImages/image1.jpg'));
 
-%IMPORTANT: ADD CODE IN TO SMOOTH THE IMAGE FIRST
+%filter = fspecial('gaussian',5);
+filter = fspecial('average',3);
+newImage1 = conv2(image1,filter,'same');
 
 image1Size = size(image1);
 height = image1Size(1);
@@ -33,3 +35,17 @@ for index = 1:N
 end
 image1Seg = reshape(image1Seg,[height width]);
 imshow(image1Seg);
+
+xVals = [];
+yVals = [];
+for x = 1:width
+   for y = 1:height
+      if(image1Seg(y,x)==1)
+         xVals = [xVals x];
+         yVals = [yVals y];
+      end
+   end
+end
+
+figure
+plot(xVals,yVals,'r.');
