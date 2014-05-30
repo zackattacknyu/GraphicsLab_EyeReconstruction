@@ -19,7 +19,7 @@ yVals = transpose(yVals);
 yValsArray = repmat(yVals,[1 width]);
 
 image1Data = zeros(height,width,3);
-image1Data(:,:,1) = image1;
+image1Data(:,:,1) = newImage1;
 image1Data(:,:,2) = xValsArray;
 image1Data(:,:,3) = yValsArray;
 
@@ -35,17 +35,3 @@ for index = 1:N
 end
 image1Seg = reshape(image1Seg,[height width]);
 imshow(image1Seg);
-
-xVals = [];
-yVals = [];
-for x = 1:width
-   for y = 1:height
-      if(image1Seg(y,x)==1)
-         xVals = [xVals x];
-         yVals = [yVals y];
-      end
-   end
-end
-
-figure
-plot(xVals,yVals,'r.');
