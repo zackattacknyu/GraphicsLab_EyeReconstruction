@@ -1,0 +1,7 @@
+EM algorithm will be good for clustering
+- also try morphology filter
+
+Bilaterial filtering will be good for taking out the noise later
+Median filteringwould also be good to try
+
+Think about histeresis and see what occurs
