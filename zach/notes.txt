@@ -5,3 +5,8 @@ Bilaterial filtering will be good for taking out the noise later
 Median filteringwould also be good to try
 
 Think about histeresis and see what occurs
+
+Notes about correlation: 
+- When I tried correlating with an image patch, there 
+	was a significant shift in the object centers.
+- This shift does not represent the shift between two consecutive images

@@ -30,8 +30,12 @@ image1DataSeq = reshape(image1Data,[N 3]);
 clusterValues = cluster(:,1);
 clusterSeg = double(clusterValues>threshold);
 image1Seg = zeros(1,N);
+image1NonSeg = zeros(1,N);
 for index = 1:N
     image1Seg(index) = clusterSeg(indices(index));
+    image1NonSeg(index) = clusterValues(indices(index));
 end
-image1Seg = reshape(image1Seg,[height width]);
-imshow(image1Seg);
+%image1Seg = reshape(image1Seg,[height width]);
+%imshow(image1Seg);
+image1NonSeg = reshape(image1NonSeg,[height width]);
+imshow(image1NonSeg);
