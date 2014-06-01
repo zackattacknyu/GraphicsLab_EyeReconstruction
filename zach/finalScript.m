@@ -4,15 +4,15 @@ sizeImage = size(firstImage);
 height = sizeImage(1);
 width = sizeImage(2);
 
-numImages = 2;
+numImages = 50;
 index = 1;
-numPossibleTotalValues = numImages*height*width*2;
+%numPossibleTotalValues = numImages*height*width*2;
 
-xVals = zeros(1,numPossibleTotalValues);
-yVals = zeros(1,numPossibleTotalValues);
-zVals = zeros(1,numPossibleTotalValues);
+%xVals = zeros(1,numPossibleTotalValues);
+%yVals = zeros(1,numPossibleTotalValues);
+%zVals = zeros(1,numPossibleTotalValues);
 
-prevImageSeg = zeros(sizeImage);
+%prevImageSeg = zeros(sizeImage);
 
 for num = 1:numImages
     
@@ -21,6 +21,10 @@ for num = 1:numImages
 
     image1Seg = getSegImage(image1);
     
+    imnameWrite = strcat('resultImages/image',num2str(num),'.jpg');
+    imwrite(image1Seg,imnameWrite,'JPEG');
+    
+    %{
     image01Seg = prevImageSeg&image1Seg;
         
     for x = 1:width
@@ -41,12 +45,14 @@ for num = 1:numImages
     end
     
     prevImageSeg = image1Seg;
-    
+    %}
 end
 
+%{
 xVals = xVals(1:index);
 yVals = yVals(1:index);
 zVals = zVals(1:index);
 
 plot3(xVals,yVals,zVals,'r.');
+%}
 
