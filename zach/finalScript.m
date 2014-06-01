@@ -4,7 +4,7 @@ sizeImage = size(firstImage);
 height = sizeImage(1);
 width = sizeImage(2);
 
-numImages = 3;
+numImages = 2;
 index = 1;
 numPossibleTotalValues = numImages*height*width*2;
 
@@ -19,11 +19,7 @@ for num = 1:numImages
     imname = strcat('rabbitImages/image',num2str(num),'.jpg');
     image1 = im2double(imread(imname));
 
-    %filter = fspecial('gaussian',5);
-    filter = fspecial('average',3);
-    newImage1 = conv2(image1,filter,'same');
-
-    image1Seg = getSegImage(newImage1);
+    image1Seg = getSegImage(image1);
     
     image01Seg = prevImageSeg&image1Seg;
         

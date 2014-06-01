@@ -2,24 +2,39 @@ function [ newSegImage ] = getKMeansImage( image1 )
 %GETKMEANSIMAGE Summary of this function goes here
 %   Detailed explanation goes here
 
-[indices,cluster] = kmeans(image1(:),2);
-biggerIndex = 1;
-if(cluster(1)<cluster(2))
-    biggerIndex = 2;
-end
-newSegImage = reshape(double((indices==biggerIndex)),size(image1));
+image1Size = size(image1);
+height = image1Size(1);
+width = image1Size(2);
 
-%{
-k=3;
-[indices2,cluster2] = kmeans(image1(:),k);
-sizeIndices = size(indices2);
-numPixels = sizeIndices(1);
-newBrightnessVals = indices2;
-for i = 1:size(indices2)
-    newBrightnessVals(i) = cluster2(indices2(i));
+threshold = 0.3;
+
+xVals = 1:width;
+xVals = xVals/width;
+xValsArray = repmat(xVals,[height 1]);
+yVals = 1:height;
+yVals = yVals/height;
+yVals = transpose(yVals);
+yValsArray = repmat(yVals,[1 width]);
+
+image1Data = zeros(height,width,3);
+image1Data(:,:,1) = image1;
+image1Data(:,:,2) = xValsArray;
+image1Data(:,:,3) = yValsArray;
+
+N = height*width;
+image1DataSeq = reshape(image1Data,[N 3]);
+[indices,cluster] = kmeans(image1DataSeq,30);
+
+clusterValues = cluster(:,1);
+clusterSeg = double(clusterValues>threshold);
+image1Seg = zeros(1,N);
+image1NonSeg = zeros(1,N);
+for index = 1:N
+    image1Seg(index) = clusterSeg(indices(index));
+    image1NonSeg(index) = clusterValues(indices(index));
 end
-newSegImage2 = reshape(newBrightnessVals,size(image1));
-%}
+
+newSegImage = reshape(image1Seg,[height width]);
 
 end
 
