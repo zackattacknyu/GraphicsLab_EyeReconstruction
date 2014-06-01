@@ -4,7 +4,7 @@ sizeImage = size(firstImage);
 height = sizeImage(1);
 width = sizeImage(2);
 
-numImages = 10;
+numImages = 3;
 index = 1;
 numPossibleTotalValues = numImages*height*width*2;
 

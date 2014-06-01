@@ -35,7 +35,9 @@ for index = 1:N
     image1Seg(index) = clusterSeg(indices(index));
     image1NonSeg(index) = clusterValues(indices(index));
 end
-%image1Seg = reshape(image1Seg,[height width]);
-%imshow(image1Seg);
+image1Seg = reshape(image1Seg,[height width]);
+figure
+imshow(image1Seg);
 image1NonSeg = reshape(image1NonSeg,[height width]);
+figure
 imshow(image1NonSeg);
