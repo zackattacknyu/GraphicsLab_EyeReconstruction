@@ -18,23 +18,23 @@ for num = 1:numImages
     imname = strcat('resultImages/image',num2str(num),'.jpg');
     image1 = im2double(imread(imname));
 
-    image1Seg = (image1>threshold);
+    image1Seg = double(image1>threshold);
     
-    image01Seg = prevImageSeg&image1Seg;
+    image01Seg = double(prevImageSeg&image1Seg);
     
     for x = 1:width
        for y = 1:height
            voxelValues(index) = uint8(image01Seg(y,x));
+           index = index + 1;
        end
     end
     
     for x = 1:width
        for y = 1:height
            voxelValues(index) = uint8(image1Seg(y,x));
+           index = index + 1;
        end
     end
-
-    index = index + 1;
     
     prevImageSeg = image1Seg;
 
