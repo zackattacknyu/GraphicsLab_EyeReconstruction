@@ -1,5 +1,5 @@
 
-firstImage = im2double(imread('wildMouseCornea/image1.jpg'));
+firstImage = im2double(imread('knockoutMouseCornea/image1.jpg'));
 sizeImage = size(firstImage);
 height = sizeImage(1);
 width = sizeImage(2);
@@ -16,12 +16,12 @@ index = 1;
 
 for num = 1:numImages
     
-    imname = strcat('wildMouseCornea/image',num2str(num),'.jpg');
+    imname = strcat('knockoutMouseCornea/image',num2str(num),'.jpg');
     image1 = im2double(imread(imname));
 
     image1Seg = getSegImage(image1);
     
-    imnameWrite = strcat('wildMouseResults/image',num2str(num),'.jpg');
+    imnameWrite = strcat('knockoutMouseResults/image',num2str(num),'.jpg');
     imwrite(image1Seg,imnameWrite,'JPEG');
     
     %{
