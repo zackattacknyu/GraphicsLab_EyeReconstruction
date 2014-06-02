@@ -29,8 +29,6 @@ public class Main extends SimpleApplication {
     
     private Spatial currentBox;
     private Material boxMat;
-    
-    private Properties trackerProps;
     private boolean mousePressedDown = false;
    
     private Vector3f lookAtCenter = Vector3f.ZERO;
@@ -69,7 +67,6 @@ public class Main extends SimpleApplication {
         
         
         viewPort.setBackgroundColor(Constants.BACKGROUND_COLOR);
-        trackerProps = PropertiesHelper.getProperties();
         
         boxMat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
         boxMat.setColor("Color", ColorRGBA.Red);
