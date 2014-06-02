@@ -1,5 +1,7 @@
 %IMPORTANT: Make sure to put this file in separately
-fname = 'rabbit central reduced 2.tif';
+%fname = 'rabbit central reduced 2.tif';
+%fname = 'wildMouseCornea.tif';
+fname = 'knockoutMouseCornea.tif';
 
 info = imfinfo(fname);
 num_images = numel(info);
@@ -11,7 +13,7 @@ for k = 1:num_images
     A = im2double(imread(fname, k, 'Info', info));
     allImages(:,:,k) = A;
     %videoImages(:,:,1,k) = A;
-    imwrite(A,strcat('rabbitImages/image',num2str(k),'.jpg'),'JPEG');
+    imwrite(A,strcat('knockoutMouseCornea/image',num2str(k),'.jpg'),'JPEG');
     % ... Do something with image A ...
 end
 meanImage = mean(allImages,3);
