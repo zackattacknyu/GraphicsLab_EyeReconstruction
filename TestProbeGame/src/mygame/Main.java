@@ -18,7 +18,16 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -71,13 +80,48 @@ public class Main extends SimpleApplication {
         boxMat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
         boxMat.setColor("Color", ColorRGBA.Red);
         
-        currentBox = initBox(boxMat,"box");
+        /*
+         * IMPORTANT NOTE:
+         * This must be added manually as it is too large
+         *  for the repository
+         */
+        String rabbitDataLocation = "textFiles/rabbitData.txt";
+        File rabbitDataFile = new File(rabbitDataLocation);
+        float zValue;
+        Vector3f boxCenter;
+        String currentLine;
+        int index = 0;
         
-        Spatial box2 = initBox(boxMat,"box");
-        box2.setLocalTranslation(5f, 0, 0);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(rabbitDataFile));
+            while((currentLine = br.readLine()) != null){
+                currentBox = initBox(boxMat,"box");
+                boxCenter = ProbeDataHelper.getVertexFromLine(currentLine);
+                zValue = 4*boxCenter.getZ();
+                
+                //temp solution
+                if(zValue > 8){
+                    break;
+                }
+                boxCenter.setZ(zValue);
+
+                currentBox.setLocalTranslation(boxCenter);
+                rootNode.attachChild(currentBox);
+
+                if(index % 100 == 0){
+                    System.out.flush();
+                    System.out.println("Now rendering box " + index);
+                }
+                index++;
+                
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Could not find File");
+        } catch (IOException iex){
+            System.out.println("IO Exception");
+        }
         
-        rootNode.attachChild(box2);
-        rootNode.attachChild(currentBox);
+
         
         setDefaultCamera();
         enableFlyCam();
@@ -88,7 +132,7 @@ public class Main extends SimpleApplication {
     
     
     private Spatial initBox(Material ballMat, String name){
-        Box b = new Box(1f, 1f, 1f);
+        Box b = new Box(1f, 1f, 2f);
         Spatial sampleBox = new Geometry("Box", b);
         sampleBox.setName(name);
         sampleBox.setLocalScale(1);
@@ -111,13 +155,13 @@ public class Main extends SimpleApplication {
     }
    
     private void setDefaultCamera(){
-        cam.setLocation(new Vector3f(-16.928802f, 23.251862f, -54.489124f));
-        cam.setRotation(new Quaternion(0.20308718f, 0.20007013f, -0.042432234f, 0.9575631f));
+        cam.setLocation(new Vector3f(-242.80269f, 166.04814f, -52.69203f));
+        cam.setRotation(new Quaternion(0.0060584876f, 0.6279685f, 0.07833031f, 0.77426296f));
     }
     private void enableFlyCam(){
         flyCam.setEnabled(true);
         flyCam.setDragToRotate(true);
-        flyCam.setMoveSpeed(10f);
+        flyCam.setMoveSpeed(60f);
         flyCam.setRotationSpeed(0f);
     }
     
