@@ -6,8 +6,8 @@ width = sizeImage(2);
 numImages = 50;
 threshold = 0.3;
 
-outputName = 'rabbit2_withoutAddedImages.TIFF';
-outputName2 = 'rabbit2_withAddedImages.TIFF';
+outputName = 'rabbit4_withoutAddedImages.TIFF';
+outputName2 = 'rabbit4_withAddedImages.TIFF';
 
 image1Seg = double(firstImage>threshold);
 [minRow,maxRow] = getMinMaxRow(image1Seg);
@@ -27,6 +27,7 @@ for num = 2:numImages
     [minRow,maxRow] = getMinMaxRow(image1Seg);
     image1SegUse = image1Seg(minRow:minRow+rowHeight,:);
     imwrite(image1SegUse,outputName,'writemode','append');
+    imwrite(image1SegUse,outputName2,'writemode','append');
     
     image01SegUse = double(image1SegUse&prevImageSegUse);
     imwrite(image01SegUse,outputName2,'writemode','append');
