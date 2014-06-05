@@ -1,2 +1,6 @@
 /largeOriginalImages/
 *.DS_Store
+*.bbl
+*.blg
+*.aux
+*.log
