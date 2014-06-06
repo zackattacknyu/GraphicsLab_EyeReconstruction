@@ -1,0 +1,122 @@
+\documentclass[11pt,psfig]{article}
+\usepackage{epsfig}
+\usepackage{times}
+\usepackage{amssymb}
+\usepackage{float}
+
+\newcount\refno\refno=1
+\def\ref{\the\refno \global\advance\refno by 1}
+\def\ux{\underline{x}}
+\def\uw{\underline{w}}
+\def\bw{\underline{w}}
+\def\ut{\underline{\theta}}
+\def\umu{\underline{\mu}} 
+\def\bmu{\underline{\mu}} 
+\def\be{p_e^*}
+\newcount\eqnumber\eqnumber=1
+\def\eq{\the \eqnumber \global\advance\eqnumber by 1}
+\def\eqs{\eq}
+\def\eqn{\eqno(\eq)}
+
+ \pagestyle{empty}
+\def\baselinestretch{1.1}
+\topmargin1in \headsep0.3in
+\topmargin0in \oddsidemargin0in \textwidth6.5in \textheight8.5in
+\begin{document}
+\setlength{\parskip}{1.2ex plus0.3ex minus 0.3ex}
+
+
+\thispagestyle{empty} \pagestyle{myheadings} \markright{3D Reconstruction of Collagen Fibers}
+
+
+
+\title{3D Reconstruction of Collagen Fibers in Cornea}
+\author{Zachary DeStefano}
+\date{Due Date: June 11, 2014}
+
+\maketitle
+
+\vfill\eject
+
+\newpage
+
+\section*{Introduction}
+
+I work in the graphics group with Gopi and Aditi. The group was approached by the Department of Ophthalmology to see if we can reconstruct various parts of the eye using the images provided. I decided to work on the part that involved reconstructing collagen fibers in the cornea. I attempted to take the cross-sectional images of them and use that data to display their shape in a 3D environment. The images are somewhat noisy and grainy and the fibers vary in shape and thickness so I had to use a variation of clustering and filtering in order to accurately locate the fibers in each image. I then took the segmented image and made it a slice in a volumetric data set. At the end, I took the data set and used a volume renderer to show it. Here are the steps at a glance that I will go into detail on: \\
+\\
+1. Do Initial Smoothing of the Image \\
+2. Do Clustering to get the fibers\\
+3. Smooth the segmented image\\
+4. Compare image to previous one and put results into 3D data set\\
+5. Add image from step 3 into data set\\
+6. Repeat Steps 1-5 for all images in data set\\
+7. Use Volume Renderer to show the images in a 3D environment\\
+\\
+There was an attempted step here of trying to align the images together. I tried various methods to see what the best overlap would be between segmented images but in the end, it made sense to just overlay the images on top of each other without doing any transformations of them. 
+
+\section*{Segmentation Steps Performed}
+
+This section describes in detail the steps performed in order to achieve a nicely segmented image showing the fibers. 
+
+\subsection*{Initial Smoothing}
+
+For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. \\
+\\
+**INSERT IMAGE OF GAUSSIAN FILTER ON ORIGINAL IMAGE**
+\\
+**INSERT IMAGE OF MEDIAN FILTER ON ORIGINAL IMAGE**
+\\
+**INSERT IMAGE OF AVERAGING FILTER ON ORIGINAL IMAGE**
+
+\subsection*{Clustering}
+
+This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. \\
+\\
+I first tried k-Means with just the brightness values. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
+**INSERT PICTURE OF NAIVE K-MEANS**\\
+\\
+I tried simple thresholding, where any brightness value over a certain amount was classified as a fiber. While this produces some good results, it still had the problem of naive k-Means in that it was not taking spatial proximity into account thus there was a significant amount of noise. \\
+**INSERT PICTURE OF THRESHOLDING RESULTS**\\
+I tried the EM algorithm **more detail**\\
+I tried the MRF algorithm **more detail**\\
+\\
+When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. **MENTION EARLIER THE THIN FIBERS IF POSSIBLE**
+
+\subsection*{Smoothing of Segmented Images}
+
+\section*{Making the Data Set}
+
+This describes what was done once the images were segmented. 
+
+\subsection*{Alignment}
+
+\subsection*{Displaying the Data Set}
+
+\section*{Results and Conclusions}
+
+\section*{Future Work}
+
+The pictures above show a data set of collagen fibers for the cornea of a rabbit. There are other data sets that we were given. I ran the above algorithms on them but the segmentation was not as successful. The above tools turned out to be the ideal choice and their parameters were tuned for the rabbit data set. Since the other data sets have images that look different though, a different set of tools and parameters with those tools are required. In addition to finding a different set of tools for segmenting a different data set, there is work to be done on improving the current segmentation. There are also further things we plan to do with the 3D data. 
+
+\subsection*{Work on improving segmentation}
+
+Qualitatively, my results seemed good and the ophthalmologists seemed to think they looked nice, but there is definitely room to improve the segmentation. When evaluating a clustering, I ended up relying on my subjective comparison between the clustered image and the original image to decide how well the fibers were brought out. It would be great if I could get a few preliminarily segmented images to compare my results with so that I can have a quantitative evaluation of how well the clustering performed. I could then compare the error rates that the various methods produce and use whichever method has the least error overall. \\
+\\
+The other problem was that I did not have a great template of what the fibers should look like. Without a good template, it was difficult to do object detection as a way to detect the fibers. As it turns out, the fibers are long thin strips but they vary in thickness. If I incorporate this information into an object detector, then I might end up with a very well segmented image. 
+\\
+It has come to our attention that when there are spots that are lined up in the image, there is likely a fiber there. We will use this and make sure to use a clustering method that favors cases where that happens. 
+
+\subsection*{Work on 3D reconstruction}
+
+The Ophthalmology department really liked seeing the fibers in the data set and their concern lies with analyzing these fibers. They want to know how many fibers there are and how they branch off each other as well as know their shape and size. In order to enable this type of analysis, the next step then will be to take the 3D data set and generate a series of meshes for the isosurface that corresponds to a voxel value of 1. This will give us a mesh for each of the fibers that we can then move around, analyze, and run simulations on.  
+
+
+\end{document}
+
+
+
+
+
+
+
+
