@@ -84,13 +84,33 @@ When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordina
 
 \subsection*{Smoothing of Segmented Images}
 
+I tried some different filters for this and in the end, a median filter and bilaterial filter. \\
+\\
+**INSERT INFO ABOUT BILATERAL FILTER**
+\\
+**INSERT MEDIAN FILTER IMAGE**
+\\
+**INSERT BILATERAL FILTER IMAGE**
+
 \section*{Making the Data Set}
 
-This describes what was done once the images were segmented. 
+This describes what was done once the images were segmented. \\
+\\
+Every time I generated slices, I did add a slice in between that consisted of pixels where both images had fibers. This was meant to bring out the fibers better in the final data set. 
 
 \subsection*{Alignment}
 
+I had images taken at different depths but I was not told that that they should be overlaid on top of each other so I tried to see if it would make sense if the images should be shifted slightly as I make the 3D data set. \\
+\\
+I took an image and shifted it on top of another image. I then took the overlap region for both images and considered a pixel a fiber if both of them had fibers there. Each of the overlap regions were different sizes so I made sure to normalize the number of matches by the total number of pixels. Even after doing this, the most overlap occured when you did not do any shifting. \\
+\\
+I did notice that the fibers tend to move up. I decided to see if correcting that would have any effect. I looked at the first image and saw the min and max row that contains a fiber. I used that height. For the rest of the images, I computed their min row and then selected the window of min to $min+height$. I compiled the slices together but in the end it did not look much different then when I did a normal overlay. \\
+\\
+Thus in the end I decided not to use any special alignment and just put the images together. 
+
 \subsection*{Displaying the Data Set}
+
+I used the volume renderer VolView to view the 3D data set that I generated from the segmented images. 
 
 \section*{Results and Conclusions}
 
