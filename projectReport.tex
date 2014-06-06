@@ -54,15 +54,43 @@ I work in the graphics group with Gopi and Aditi. The group was approached by th
 \\
 There was an attempted step here of trying to align the images together. I tried various methods to see what the best overlap would be between segmented images but in the end, it made sense to just overlay the images on top of each other without doing any transformations of them. 
 
-\section*{Initial Smoothing}
+\section*{Segmentation Steps Performed}
 
-\section*{Clustering}
+This section describes in detail the steps performed in order to achieve a nicely segmented image showing the fibers. 
 
-\section*{Smoothing of Segmented Images}
+\subsection*{Initial Smoothing}
 
-\section*{Alignment}
+For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. \\
+\\
+**INSERT IMAGE OF GAUSSIAN FILTER ON ORIGINAL IMAGE**
+\\
+**INSERT IMAGE OF MEDIAN FILTER ON ORIGINAL IMAGE**
+\\
+**INSERT IMAGE OF AVERAGING FILTER ON ORIGINAL IMAGE**
 
-\section*{Making and Displaying the Data Set}
+\subsection*{Clustering}
+
+This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. \\
+\\
+I first tried k-Means with just the brightness values. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
+**INSERT PICTURE OF NAIVE K-MEANS**\\
+\\
+I tried simple thresholding, where any brightness value over a certain amount was classified as a fiber. While this produces some good results, it still had the problem of naive k-Means in that it was not taking spatial proximity into account thus there was a significant amount of noise. \\
+**INSERT PICTURE OF THRESHOLDING RESULTS**\\
+I tried the EM algorithm **more detail**\\
+I tried the MRF algorithm **more detail**\\
+\\
+When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. **MENTION EARLIER THE THIN FIBERS IF POSSIBLE**
+
+\subsection*{Smoothing of Segmented Images}
+
+\section*{Making the Data Set}
+
+This describes what was done once the images were segmented. 
+
+\subsection*{Alignment}
+
+\subsection*{Displaying the Data Set}
 
 \section*{Results and Conclusions}
 
