@@ -77,16 +77,29 @@ I first tried k-Means with just the brightness values. The result was good but t
 \\
 I tried simple thresholding, where any brightness value over a certain amount was classified as a fiber. While this produces some good results, it still had the problem of naive k-Means in that it was not taking spatial proximity into account thus there was a significant amount of noise. \\
 **INSERT PICTURE OF THRESHOLDING RESULTS**\\
-I tried the EM algorithm **more detail**\\
-I tried the MRF algorithm **more detail**\\
+\\
+I tried the EM algorithm. I found Matlab code written by Michael Chen on the Matlab File Exchange in order to run it. This is the link:\\
+http://www.mathworks.com/matlabcentral/fileexchange/26184-em-algorithm-for-gaussian-mixture-model\\
+Unfortunately, the EM algorithm did not perform better than k-means. It did not bring out the thin fibers in the top very well. It could be that the EM algorithm is meant to be used when the distribution follows a Gaussian model, whereas this data set may not really be following that model. \\
+**INSERT EM PICTURE HERE**\\
+\\
+I tried the MRF algorithm. I used the min-cut code that I did for an earlier homework. It performed well at selecting certain fibers but it did not select all the fibers that I wanted it to. This could have happened because the min cut algorithm is optimized for selecting foreground and background. The fibers do not quite have the image properties of a foreground in that they are not all in one region of the image, so using min cut is not as effective. Perhaps if I had done the algorithm but with multiple seed points then it might have worked well. Unfortunately, the number of seed points needed is not always known and their location varies between images. Since there is a large number of images in each data set, having to select seed points would be impractical. Thus, it would have not been worth trying to continue making the MRF algorithm would well with my data set. \\
+**INSERT MIN CUT PICTURE**\\
+\\
+I finally tried object correlation. I tried a few different templates. I used one template that was just a little square where a fiber was located. I also tried a larger middle square that had a few fibers. Unfortunately, when I did the correlation and then displayed the results as an image, it just looked like a blurrier version of the old image in both cases. It did not bring out the fibers in the way I was hoping. I did also think about using correlation for alignment but the results were not reliable enough to be trusted to use on all the images of the data set. \\
+\\
+Correlation likely failed due to differences in the fibers in size, shape, and thickness, making them hard to detect. **EXPAND UPON THIS MORE**\\
+\\
+**INSERT PICTURE OF LITTLE SQUARE TEMPLATE**\\
+**INSERT PICTURE OF LARGER TEMPLATE**\\
+**SHOW RESULTS WITH LITTLE SQUARE TEMPLATE**\\
+**SHOW RESULTS WITH LARGER TEMPLATE**\\
 \\
 When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. **MENTION EARLIER THE THIN FIBERS IF POSSIBLE**
 
 \subsection*{Smoothing of Segmented Images}
 
-I tried some different filters for this and in the end, a median filter and bilaterial filter. \\
-\\
-**INSERT INFO ABOUT BILATERAL FILTER**
+I tried some different filters for this and in the end, a median filter and bilaterial filter gave me the best result. I used a bilateral filter because it is both noise reducing and edge preserving and takes into account both spatial proximity and brightness when doing the averaging. In this way, it would be really good at bringing out the fibers. When I implemented bilateral filtering, I used Matlab code from the Matlab file exchange. The particular code that I used was written by Douglas Lanman and the code can be found here: http://www.mathworks.com/matlabcentral/fileexchange/12191-bilateral-filtering \\
 \\
 **INSERT MEDIAN FILTER IMAGE**
 \\
@@ -110,12 +123,13 @@ Thus in the end I decided not to use any special alignment and just put the imag
 
 \subsection*{Displaying the Data Set}
 
-I used the volume renderer VolView to view the 3D data set that I generated from the segmented images. 
+I used the volume renderer VolView (http://www.kitware.com/opensource/volview.html) to view the 3D data set that I generated from the segmented images. Here are some screenshots of it displaying the volume rendering:
+**INSERT SCREENSHOTS OF VOLUMETRIC DATA SET**
 
-\section*{Results and Conclusions}
+\section*{Results and Future Work}
 
-\section*{Future Work}
-
+After all was said and done, I ended up with a nice looking rendering of the collagen fibers in a rabbit cornea. I showed it to the Ophthalmologists and they thought it was a good first step in using 3D visualization to analyze the fibers. There were thin fibers at the top and I was especially pleased that those were brought out very well. Using techniques from this course allowed me to bring out the fibers very well. The volumetric rendering would have been hazy and uninformative had I not done any segmentation on the images. Since the fibers were brought out, I will be able to do isosurface extraction to make them into a mesh. \\
+\\
 The pictures above show a data set of collagen fibers for the cornea of a rabbit. There are other data sets that we were given. I ran the above algorithms on them but the segmentation was not as successful. The above tools turned out to be the ideal choice and their parameters were tuned for the rabbit data set. Since the other data sets have images that look different though, a different set of tools and parameters with those tools are required. In addition to finding a different set of tools for segmenting a different data set, there is work to be done on improving the current segmentation. There are also further things we plan to do with the 3D data. 
 
 \subsection*{Work on improving segmentation}
@@ -125,6 +139,7 @@ Qualitatively, my results seemed good and the ophthalmologists seemed to think t
 The other problem was that I did not have a great template of what the fibers should look like. Without a good template, it was difficult to do object detection as a way to detect the fibers. As it turns out, the fibers are long thin strips but they vary in thickness. If I incorporate this information into an object detector, then I might end up with a very well segmented image. 
 \\
 It has come to our attention that when there are spots that are lined up in the image, there is likely a fiber there. We will use this and make sure to use a clustering method that favors cases where that happens. 
+\\
 
 \subsection*{Work on 3D reconstruction}
 
