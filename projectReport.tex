@@ -70,7 +70,7 @@ For the initial smoothing, I tested out filters that would make the image look l
 
 \subsection*{Clustering}
 
-This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. \\
+This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. This was especially difficult for this problem due to the variation in the fibers. The thin fibers at the top were especially easy to miss. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. \\
 \\
 I first tried k-Means with just the brightness values. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
 **INSERT PICTURE OF NAIVE K-MEANS**\\
@@ -86,16 +86,20 @@ Unfortunately, the EM algorithm did not perform better than k-means. It did not 
 I tried the MRF algorithm. I used the min-cut code that I did for an earlier homework. It performed well at selecting certain fibers but it did not select all the fibers that I wanted it to. This could have happened because the min cut algorithm is optimized for selecting foreground and background. The fibers do not quite have the image properties of a foreground in that they are not all in one region of the image, so using min cut is not as effective. Perhaps if I had done the algorithm but with multiple seed points then it might have worked well. Unfortunately, the number of seed points needed is not always known and their location varies between images. Since there is a large number of images in each data set, having to select seed points would be impractical. Thus, it would have not been worth trying to continue making the MRF algorithm would well with my data set. \\
 **INSERT MIN CUT PICTURE**\\
 \\
-I finally tried object correlation. I tried a few different templates. I used one template that was just a little square where a fiber was located. I also tried a larger middle square that had a few fibers. Unfortunately, when I did the correlation and then displayed the results as an image, it just looked like a blurrier version of the old image in both cases. It did not bring out the fibers in the way I was hoping. I did also think about using correlation for alignment but the results were not reliable enough to be trusted to use on all the images of the data set. \\
+I finally tried object correlation. I tried a few different templates. I used one template that was just a little square where a fiber was located. I also tried a larger middle square that had a few fibers. Unfortunately, when I did the correlation and then displayed the results as an image, it just looked like a blurrier version of the old image in both cases. It did not bring out the fibers in the way I was hoping. \\
 \\
-Correlation likely failed due to differences in the fibers in size, shape, and thickness, making them hard to detect. **EXPAND UPON THIS MORE**\\
+I did also think about using correlation for alignment. I was thinking that I would correlate two images with the same template and I could see where the highest correlation was in both images and match up those points. Unfortunately, the results were not reliable enough for me to do that and the two points that I ended up with did not match up well enough. \\
+\\
+Correlation likely failed due to differences in the fibers in size, shape, and thickness, making them hard to detect with a single template. I did not try to use a HOG approach but it is not likely to produce great results due to the variations mentioned above. In addition to the variation in fibers themselves, many of the fiber objects will diverge into two separate fibers or there will be fibers that will converge into one fiber. These variations in shape are important to detect but make it even harder to use correlation. \\
+\\
+In the end, due to variations between the fibers, object detection using correlation does not seem like a practical route to pursue to improve the clustering. When I looked at the other data sets, I noticed that the fibers there are even more different than the ones in the rabbit set, so I would be continually struggling to find a good template. 
 \\
 **INSERT PICTURE OF LITTLE SQUARE TEMPLATE**\\
 **INSERT PICTURE OF LARGER TEMPLATE**\\
 **SHOW RESULTS WITH LITTLE SQUARE TEMPLATE**\\
 **SHOW RESULTS WITH LARGER TEMPLATE**\\
 \\
-When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. **MENTION EARLIER THE THIN FIBERS IF POSSIBLE**
+When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. 
 
 \subsection*{Smoothing of Segmented Images}
 
@@ -115,9 +119,11 @@ Every time I generated slices, I did add a slice in between that consisted of pi
 
 I had images taken at different depths but I was not told that that they should be overlaid on top of each other so I tried to see if it would make sense if the images should be shifted slightly as I make the 3D data set. \\
 \\
-I took an image and shifted it on top of another image. I then took the overlap region for both images and considered a pixel a fiber if both of them had fibers there. Each of the overlap regions were different sizes so I made sure to normalize the number of matches by the total number of pixels. Even after doing this, the most overlap occured when you did not do any shifting. \\
+I took an image and shifted it on top of another image. I then took the overlap region for both images and considered a pixel a fiber if both of them had fibers there. Each of the overlap regions were different sizes so I made sure to normalize the number of matches by the total number of pixels. Even after doing this, the most overlap occurred when you did not do any shifting. \\
 \\
 I did notice that the fibers tend to move up. I decided to see if correcting that would have any effect. I looked at the first image and saw the min and max row that contains a fiber. I used that height. For the rest of the images, I computed their min row and then selected the window of min to $min+height$. I compiled the slices together but in the end it did not look much different then when I did a normal overlay. \\
+\\
+As mentioned above, I thought about using correlation and matching up the top points between two images but my results were not reliable enough for that. I thought about whether I could use another method to find points and then match them up but when I noticed that the straight overlay produces the most matches, I decided to stick with that. Additionally, due to the variations in the fibers, there does not seem to be a reliable way of detecting appropriate seed points to use for an alignment. \\
 \\
 Thus in the end I decided not to use any special alignment and just put the images together. 
 
@@ -135,8 +141,6 @@ The pictures above show a data set of collagen fibers for the cornea of a rabbit
 \subsection*{Work on improving segmentation}
 
 Qualitatively, my results seemed good and the ophthalmologists seemed to think they looked nice, but there is definitely room to improve the segmentation. When evaluating a clustering, I ended up relying on my subjective comparison between the clustered image and the original image to decide how well the fibers were brought out. It would be great if I could get a few preliminarily segmented images to compare my results with so that I can have a quantitative evaluation of how well the clustering performed. I could then compare the error rates that the various methods produce and use whichever method has the least error overall. \\
-\\
-The other problem was that I did not have a great template of what the fibers should look like. Without a good template, it was difficult to do object detection as a way to detect the fibers. As it turns out, the fibers are long thin strips but they vary in thickness. If I incorporate this information into an object detector, then I might end up with a very well segmented image. 
 \\
 It has come to our attention that when there are spots that are lined up in the image, there is likely a fiber there. We will use this and make sure to use a clustering method that favors cases where that happens. 
 \\
