@@ -42,7 +42,7 @@
 
 \section{Introduction}
 
-I work in the graphics group with Gopi and Aditi. The group was approached by the Department of Ophthalmology to see if we can reconstruct various parts of the eye using the images provided. I decided to work on reconstructing collagen fibers in the cornea. This mean taking cross-sectional images of them and using that to reconstruct them in a 3D virtual environment. The important aspects of the fibers include shape and size so I just had to locate them in each picture and compile the results together. The images are somewhat noisy and grainy and the fibers vary in shape and thickness so I had to use a variation of clustering and filtering in order to accurately locate them. Once located, I put the segmentation results into a volumetric data set and used a volume renderer to display it. Here are the steps at a glance that I will go into detail on: \\
+I work in the graphics group with Gopi and Aditi. The group was approached by the Department of Ophthalmology to see if we can reconstruct various parts of the eye using the images provided. I decided to work on reconstructing collagen fibers in the cornea. This mean taking cross-sectional images of them and using that to reconstruct them in a 3D virtual environment. The important aspects of the fibers include shape and size so I just had to locate them in each picture and compile the results together. This also meant that I just had to worry about the brightness value of each pixel and not its RGB vector. The images are somewhat noisy and grainy and the fibers vary in shape and thickness so I had to use a variation of clustering and filtering in order to accurately locate them. Once located, I put the segmentation results into a volumetric data set and used a volume renderer to display it. Here are the steps at a glance that I will go into detail on: \\
 \\
 1. Do Initial Smoothing of the Image \\
 2. Do Clustering to get the fibers\\
@@ -56,24 +56,34 @@ There was an attempted step here of trying to align the images together. I tried
 
 \section{Initial Smoothing Step}
 
-For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. I was aiming for a filter that would make the image look like it was a series of bands of black and white. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. This is likely because averaging the pixels is more likely to create uniform bands across the image. \\
+For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. I was aiming for a filter that would make the image look like it was a series of bands of black and white. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. This is likely because averaging the pixels is more likely to create uniform bands across the image.\\
 \\
-**INSERT IMAGE OF GAUSSIAN FILTER ON ORIGINAL IMAGE**
-\\
-**INSERT IMAGE OF MEDIAN FILTER ON ORIGINAL IMAGE**
-\\
-**INSERT IMAGE OF AVERAGING FILTER ON ORIGINAL IMAGE**
+In order to show the comparison of different filters, here is first the original image to be smoothed.
+\begin{figure}[H]
+\centering
+\includegraphics[height=6in]{image1.jpg}
+\caption{An example image to be smoothed}
+\end{figure}
+Here is a pictures of the results of the three different filters.
+\begin{figure}[H]
+\centering
+\includegraphics[height=6in]{initialSmoothComparisonPic.jpg}
+\caption{The three different initial smoothings done}
+\end{figure}
 
-\subsection{Clustering}
+\section{Clustering Step}
 
-This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. This was especially difficult for this problem due to the variation in the fibers. The thin fibers at the top were especially easy to miss. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. \\
-\\
+This was the most difficult and most important part of the project. Locating the fibers is all about clustering together the different regions of the image where the brightness is high. This was especially difficult for this problem due to the variation in the fibers. The thin fibers at the top were especially easy to miss. With this in mind, I tried the EM algorithm, the min-cut algorithm for MRF, k-Means, simple thresholding, as well as object correlation, and in the end k-Means performed the best. 
+
+\subsection{Simple k-Means}
 I first tried k-Means with just the brightness values. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
 **INSERT PICTURE OF NAIVE K-MEANS**\\
-\\
-I tried simple thresholding, where any brightness value over a certain amount was classified as a fiber. While this produces some good results, it still had the problem of naive k-Means in that it was not taking spatial proximity into account thus there was a significant amount of noise. \\
-**INSERT PICTURE OF THRESHOLDING RESULTS**\\
-\\
+
+\subsection{Simple Thresholding}
+I tried simple thresholding, where any brightness value over a certain amount was classified as a fiber. While this produces some good results, it still had the problem of naive k-Means in that it was not taking spatial proximity into account. \\
+**INSERT PICTURE OF THRESHOLDING RESULTS**
+
+\subsection{EM Algorithm}
 I tried the EM algorithm. I found Matlab code written by Michael Chen on the Matlab File Exchange in order to run it. This is the link:\\
 http://www.mathworks.com/matlabcentral/fileexchange/26184-em-algorithm-for-gaussian-mixture-model\\
 Unfortunately, the EM algorithm did not perform better than k-means. It did not bring out the thin fibers in the top very well. It could be that the EM algorithm is meant to be used when the distribution follows a Gaussian model, whereas this data set may not really be following that model. \\
