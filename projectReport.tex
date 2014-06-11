@@ -54,13 +54,9 @@ I work in the graphics group with Gopi and Aditi. The group was approached by th
 \\
 There was an attempted step here of trying to align the images together. I tried various methods to see what the best overlap would be between segmented images but in the end, it made sense to just overlay the images on top of each other without doing any transformations of them. 
 
-\section{Segmentation Steps Performed}
+\section{Initial Smoothing Step}
 
-This section describes in detail the steps performed in order to achieve a nicely segmented image showing the fibers. 
-
-\subsection{Initial Smoothing}
-
-For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. \\
+For the initial smoothing, I tested out filters that would make the image look less grainy than the original image. I was aiming for a filter that would make the image look like it was a series of bands of black and white. That way whatever clustering algorithm I was using would have an easier time locating the fibers. I tried a Gaussian filter and a median filter but those did not work as well as the simple averaging filter. This is likely because averaging the pixels is more likely to create uniform bands across the image. \\
 \\
 **INSERT IMAGE OF GAUSSIAN FILTER ON ORIGINAL IMAGE**
 \\
