@@ -152,11 +152,18 @@ I was hoping that the results would be better with a bigger template, but as can
 
 \section{Smoothing of Segmented Images}
 
-Lastly, I wanted to smooth out the segmented images to make the fibers look better. I tried a few different filters and in the end, a median filter followed by a bilateral filter proved to be the best option. I liked the result of using a median filter as it takes out noisy pixels and does not use them in any computation. I used a bilateral filter because it is both noise reducing and edge preserving and takes into account both spatial proximity and brightness when doing the averaging. In this way, it would be really good at bringing out the fibers. When I implemented bilateral filtering, I used Matlab code from the Matlab file exchange. The particular code that I used was written by Douglas Lanman and the code can be found here: http://www.mathworks.com/matlabcentral/fileexchange/12191-bilateral-filtering \\
-\\
-**INSERT MEDIAN FILTER IMAGE**
-\\
-**INSERT BILATERAL FILTER IMAGE**
+Lastly, after applying k-Means to segment the images, I wanted to smooth out the segmented images to make the fibers look better. I tried a few different filters and in the end, a median filter followed by a bilateral filter proved to be the best option. I liked the result of using a median filter as it takes out noisy pixels and does not use them in any computation. I used a bilateral filter because it is both noise reducing and edge preserving and takes into account both spatial proximity and brightness when doing the averaging. In this way, it was really good at bringing out the fibers. When I implemented bilateral filtering, I used Matlab code from the Matlab file exchange. 
+\begin{figure}[H]
+\centering
+\includegraphics[height=5in]{image1_medianFilterResult.jpg}
+\caption{Result of applying median filter to segmented image}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=5in]{image1_bilateralFilterResult.jpg}
+\caption{Result of applying bilateral filter to the median filtered image}
+\end{figure}
 
 \section{Making the Data Set}
 
