@@ -1,36 +1,43 @@
-%IMPORTANT: Make sure to put this file in separately
-fname = 'rabbit central reduced 2.tif';
+image1 = im2double(imread('rabbitImages/image1.jpg'));
 
-info = imfinfo(fname);
-num_images = numel(info);
-image1 = im2double(imread(fname,1,'Info',info));
+%filter = fspecial('gaussian',5);
+filter = fspecial('average',3);
+newImage1 = conv2(image1,filter,'same');
 
-imageSize = size(image1);
-allImages = zeros(imageSize(1),imageSize(2),num_images);
-videoImages = zeros(imageSize(1),imageSize(2),1,num_images);
-for k = 1:10
-    A = im2double(imread(fname, k, 'Info', info));
-    %allImages(:,:,k) = A;
-    %videoImages(:,:,1,k) = A;
-    try
-        kMeansImage = getKMeansImage(A);
-    catch err
-        kMeansImage = zeros(imageSize);
-    end
-    figure
-    imshow(kMeansImage);
-    allImages(:,:,k) = kMeansImage;
-    %videoImages(:,:,1,k) = kMeansImage;
+image1Size = size(image1);
+height = image1Size(1);
+width = image1Size(2);
+
+threshold = 0.3;
+
+xVals = 1:width;
+xVals = xVals/width;
+xValsArray = repmat(xVals,[height 1]);
+yVals = 1:height;
+yVals = yVals/height;
+yVals = transpose(yVals);
+yValsArray = repmat(yVals,[1 width]);
+
+image1Data = zeros(height,width,3);
+image1Data(:,:,1) = newImage1;
+image1Data(:,:,2) = xValsArray;
+image1Data(:,:,3) = yValsArray;
+
+N = height*width;
+image1DataSeq = reshape(image1Data,[N 3]);
+[indices,cluster] = kmeans(image1DataSeq,30);
+
+clusterValues = cluster(:,1);
+clusterSeg = double(clusterValues>threshold);
+image1Seg = zeros(1,N);
+image1NonSeg = zeros(1,N);
+for index = 1:N
+    image1Seg(index) = clusterSeg(indices(index));
+    image1NonSeg(index) = clusterValues(indices(index));
 end
-meanImage = mean(allImages,3);
+image1Seg = reshape(image1Seg,[height width]);
 figure
-imagesc(meanImage);
-colorbar;
-
-%{
-writerObj = VideoWriter('rabbit_video_2.avi');
-writerObj.FrameRate = 3;
-open(writerObj);
-writeVideo(writerObj,videoImages);
-close(writerObj);
-%}
+imshow(image1Seg);
+image1NonSeg = reshape(image1NonSeg,[height width]);
+figure
+imshow(image1NonSeg);

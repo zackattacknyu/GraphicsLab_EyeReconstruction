@@ -84,7 +84,7 @@ I first tried simple thresholding, where any brightness value over a certain amo
 \end{figure}
 
 \subsection{Simple k-Means}
-I tried k-Means with just the brightness values. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
+I tried k-Means with just the brightness values. I used $k=2$ so that it would group it into one cluster that is not a fiber and one that is a fiber. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
 **INSERT PICTURE OF NAIVE K-MEANS**\\
 
 
