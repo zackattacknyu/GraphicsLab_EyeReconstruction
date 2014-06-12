@@ -84,10 +84,23 @@ I first tried simple thresholding, where any brightness value over a certain amo
 \end{figure}
 
 \subsection{Simple k-Means}
-I tried k-Means with just the brightness values. I used $k=2$ so that it would group it into one cluster that is not a fiber and one that is a fiber. The result was good but there was a lot of noise in the clustering and it was not taking spatial proximity into account when doing the clustering, which is important for the problem. \\
-**INSERT PICTURE OF NAIVE K-MEANS**\\
+I tried k-Means with just the brightness values. I used $k=2$ so that it would group it into one cluster that is not a fiber and one that is a fiber. The result was good but there was a lot of noise in the clustering likely due to the fact that it was not taking into account spatial proximity. I decided to try other methods that would be taking spatial proximity into account. Below is the result of the initial k-Means clustering where the greater brightness cluster is colored white and the lower brightness cluster is colored black. 
 
+\begin{figure}[H]
+\centering
+\includegraphics[height=5in]{Initial_kMeansSegmentationResult.jpg}
+\caption{k-Means result when k=2}
+\end{figure}
 
+\subsection{k-Means on spatial and brightness data}
+
+When I tried k-Means but with $k=30$ and vectors which consisted of a normalized $x$ and $y$ value as well as brightness, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. From my experience with thresholding, I used $0.3$ as the classification boundary between clusters classified as representing regions that were fibers and ones that were not fibers. Below is the result of running k-Means in this manner with the raw clusters displayed on the left and the segmented clusters displayed on the right.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=5in]{complex_k_MeansResults.jpg}
+\caption{k-Means result when k=30 and (x,y,brightness) are the points}
+\end{figure}
 
 \subsection{EM Algorithm}
 I tried the EM algorithm. I found Matlab code written by Michael Chen on the Matlab File Exchange in order to run it. This is the link:\\
@@ -111,7 +124,7 @@ In the end, due to variations between the fibers, object detection using correla
 **SHOW RESULTS WITH LITTLE SQUARE TEMPLATE**\\
 **SHOW RESULTS WITH LARGER TEMPLATE**\\
 \\
-When I tried k-Means but with $k=30$ and using a normalized $x$ and $y$ coordinate as well as brightness values, I ended up with very nice looking fibers. Around the top of the image, the fibers start to thin out so they are harder to detect, but k-Means was still able to detect them. 
+
 
 \subsection{Smoothing of Segmented Images}
 
