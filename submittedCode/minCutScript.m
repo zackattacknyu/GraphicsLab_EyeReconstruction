@@ -4,14 +4,24 @@ This is the test script that was used to generate
 
 %}
 
-imageInit = im2double(imread('image1.jpg'));
-figure
-imshow(imageInit);
+%averages the image
+image1 = im2double(imread('image1.jpg'));
+filter = fspecial('average',3);
+imageInit = conv2(image1,filter,'same');
 imageSize = size(imageInit);
 
+%Instead of picking seed values, I just used
+%   this to get the seed values
 foreColorBWVal = max(max(imageInit));
 backColorBWVal = min(min(imageInit));
 
+%{
+The min-cut script I made for Homework 3 was designed to be used
+    on pixels that were RGB not brightness. Instead of re-writing the code,
+    I just assigned each channel the same brightness value, which will
+    yield results that are equivalent to using a single brightness value.
+Most of this code then is just recycled from Homework 3.
+%}
 foreColor = [foreColorBWVal foreColorBWVal foreColorBWVal];
 backColor = [backColorBWVal backColorBWVal backColorBWVal];
 
