@@ -135,18 +135,23 @@ I did also think about using correlation for alignment. I was thinking that I wo
 \\
 Correlation likely failed due to differences in the fibers in size, shape, and thickness, making them hard to detect with a single template. I did not try to use a HOG approach but it is not likely to produce great results due to the variations mentioned above. In addition to the variation in fibers themselves, many of the fiber objects will diverge into two separate fibers or there will be fibers that will converge into one fiber. These variations in shape are important to detect but make it even harder to use correlation. \\
 \\
-In the end, due to the variations mentioned above, object detection using correlation does not seem like a practical route to pursue to improve the clustering. When I looked at the other data sets, I noticed that the fibers there are even more different than the ones in the rabbit set, so the same issues would appear again.
+In the end, due to the variations mentioned above, object detection using correlation does not seem like a practical route to pursue to improve the clustering. When I looked at the other data sets, I noticed that the fibers there are even more different than the ones in the rabbit set, so the same issues would appear again.\\
 \\
-**INSERT PICTURE OF LITTLE SQUARE TEMPLATE**\\
+Below is an illustration of the correlation results when using the small template. The results are seen for the first two images and it can be observed that the fibers are not brought out too well. Additionally, the points with the highest correlation do not correspond too well to be used for alignment.
+\begin{figure}[H]
+\centering
+\includegraphics[height=9in]{correlationResults_template1.jpg}
+\caption{The correlation results on image1 and image2 using template 1}
+\end{figure}
+I was hoping that the results would be better with a bigger template, but as can be observed below, they were not.
 **INSERT PICTURE OF LARGER TEMPLATE**\\
-**SHOW RESULTS WITH LITTLE SQUARE TEMPLATE**\\
 **SHOW RESULTS WITH LARGER TEMPLATE**\\
 \\
 
 
-\subsection{Smoothing of Segmented Images}
+\section{Smoothing of Segmented Images}
 
-I tried some different filters for this and in the end, a median filter and bilaterial filter gave me the best result. I used a bilateral filter because it is both noise reducing and edge preserving and takes into account both spatial proximity and brightness when doing the averaging. In this way, it would be really good at bringing out the fibers. When I implemented bilateral filtering, I used Matlab code from the Matlab file exchange. The particular code that I used was written by Douglas Lanman and the code can be found here: http://www.mathworks.com/matlabcentral/fileexchange/12191-bilateral-filtering \\
+Lastly, I wanted to smooth out the segmented images to make the fibers look better. I tried a few different filters and in the end, a median filter followed by a bilateral filter proved to be the best option. I liked the result of using a median filter as it takes out noisy pixels and does not use them in any computation. I used a bilateral filter because it is both noise reducing and edge preserving and takes into account both spatial proximity and brightness when doing the averaging. In this way, it would be really good at bringing out the fibers. When I implemented bilateral filtering, I used Matlab code from the Matlab file exchange. The particular code that I used was written by Douglas Lanman and the code can be found here: http://www.mathworks.com/matlabcentral/fileexchange/12191-bilateral-filtering \\
 \\
 **INSERT MEDIAN FILTER IMAGE**
 \\
