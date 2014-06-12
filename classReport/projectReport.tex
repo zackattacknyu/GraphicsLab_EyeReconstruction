@@ -121,17 +121,21 @@ I then used a classification boundary of $0.25$ on the result and any cluster ab
 \end{figure}
 
 \subsection{Min-cut algorithm on Markov Random Fields}
-I tried the MRF algorithm. I used the min-cut code that I did for an earlier homework. It performed well at selecting certain fibers but it did not select all the fibers that I wanted it to. This could have happened because the min cut algorithm is optimized for selecting foreground and background. The fibers do not quite have the image properties of a foreground in that they are not all in one region of the image, so using min cut is not as effective. Perhaps if I had done the algorithm but with multiple seed points then it might have worked well. Unfortunately, the number of seed points needed is not always known and their location varies between images. Since there is a large number of images in each data set, having to select seed points would be impractical. Thus, it would have not been worth trying to continue making the MRF algorithm would well with my data set. \\
-**INSERT MIN CUT PICTURE**
+I tried using the MRF model to separate out the fibers. I used the min-cut code that I did for an earlier homework. It performed well at selecting certain fibers but it did not select all the fibers that I wanted it to. This could have happened because the min cut algorithm is optimized for selecting foreground and background. The fibers do not quite have the image properties of a foreground in that they are not all in one region of the image, so using min cut is not as effective. Perhaps if I had done the algorithm but with one seed point per fiber region then it might have worked well. Unfortunately, the number of fiber regions is not always known. Since there is a large number of images in each data set, having to figure out the number of regions is impractical. Thus, it would have not been worth trying to continue making the MRF model work well with my data set. Here is the result of using it which shows that some of the fibers have been located but not all of them. \\
+\begin{figure}[H]
+\centering
+\includegraphics[height=5in]{minCutResult.jpg}
+\caption{The resultant segmentation after using min-cut}
+\end{figure}
 
 \subsection{Object Correlation}
 I finally tried object correlation. I tried a few different templates. I used one template that was just a little square where a fiber was located. I also tried a larger middle square that had a few fibers. Unfortunately, when I did the correlation and then displayed the results as an image, it just looked like a blurrier version of the old image in both cases. It did not bring out the fibers in the way I was hoping. \\
 \\
-I did also think about using correlation for alignment. I was thinking that I would correlate two images with the same template and I could see where the highest correlation was in both images and match up those points. Unfortunately, the results were not reliable enough for me to do that and the two points that I ended up with did not match up well enough. \\
+I did also think about using correlation for alignment. I was thinking that I would correlate two images with the same template and I could see where the highest correlation was in both images and match up those points. Unfortunately, the results were not reliable enough to be useful in that the two points did not match up well enough. \\
 \\
 Correlation likely failed due to differences in the fibers in size, shape, and thickness, making them hard to detect with a single template. I did not try to use a HOG approach but it is not likely to produce great results due to the variations mentioned above. In addition to the variation in fibers themselves, many of the fiber objects will diverge into two separate fibers or there will be fibers that will converge into one fiber. These variations in shape are important to detect but make it even harder to use correlation. \\
 \\
-In the end, due to variations between the fibers, object detection using correlation does not seem like a practical route to pursue to improve the clustering. When I looked at the other data sets, I noticed that the fibers there are even more different than the ones in the rabbit set, so I would be continually struggling to find a good template. 
+In the end, due to the variations mentioned above, object detection using correlation does not seem like a practical route to pursue to improve the clustering. When I looked at the other data sets, I noticed that the fibers there are even more different than the ones in the rabbit set, so I would be continually struggling to find a good template. 
 \\
 **INSERT PICTURE OF LITTLE SQUARE TEMPLATE**\\
 **INSERT PICTURE OF LARGER TEMPLATE**\\
