@@ -167,7 +167,7 @@ Lastly, after applying k-Means to segment the images, I wanted to smooth out the
 
 \section{Making the Data Set}
 
-This section describes what was done once the images were segmented. Every time I generated slices, I did add a slice in between that consisted of pixels where both images had fibers. This was meant to bring out the fibers better in the final data set. 
+This section describes what was done once the images were segmented. 
 
 \subsection{Alignment}
 
@@ -179,7 +179,7 @@ As mentioned above, I thought about using correlation and matching up the top po
 
 \subsection{Displaying the Data Set}
 
-I used the volume renderer VolView (http://www.kitware.com/opensource/volview.html) to view the 3D data set that I generated from the segmented images. Here are some screenshots of it displaying the volume rendering:
+After determining that doing a normal overlay was the best route, I decided to bring out the fibers even more by adding images between each pair that consisted of pixels where both images had fibers. I then took all the images generated and put them together in a 3D data set. I used the volume renderer VolView (http://www.kitware.com/opensource/volview.html) to view the 3D data set that I generated from the segmented images. Here are some screenshots of it displaying the volume rendering:
 **INSERT SCREENSHOTS OF VOLUMETRIC DATA SET**
 
 \section{Results and Future Work}
