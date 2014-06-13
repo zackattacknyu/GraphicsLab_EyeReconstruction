@@ -7,8 +7,6 @@ This script was used to take the TIFF files and convert
 That way they were easier to go through in order later.
 %}
 
-
-%IMPORTANT: Make sure to put this file in separately
 %fname = 'rabbit central reduced 2.tif';
 %fname = 'wildMouseCornea.tif';
 fname = 'knockoutMouseCornea.tif';

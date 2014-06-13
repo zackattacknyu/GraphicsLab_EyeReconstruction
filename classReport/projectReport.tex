@@ -167,9 +167,7 @@ Lastly, after applying k-Means to segment the images, I wanted to smooth out the
 
 \section{Making the Data Set}
 
-This describes what was done once the images were segmented. \\
-\\
-Every time I generated slices, I did add a slice in between that consisted of pixels where both images had fibers. This was meant to bring out the fibers better in the final data set. 
+This section describes what was done once the images were segmented. Every time I generated slices, I did add a slice in between that consisted of pixels where both images had fibers. This was meant to bring out the fibers better in the final data set. 
 
 \subsection{Alignment}
 
@@ -177,11 +175,7 @@ I had images taken at different depths but I was not told that that they should 
 \\
 I took an image and shifted it on top of another image. I then took the overlap region for both images and considered a pixel a fiber if both of them had fibers there. Each of the overlap regions were different sizes so I made sure to normalize the number of matches by the total number of pixels. Even after doing this, the most overlap occurred when you did not do any shifting. \\
 \\
-I did notice that the fibers tend to move up. I decided to see if correcting that would have any effect. I looked at the first image and saw the min and max row that contains a fiber. I used that height. For the rest of the images, I computed their min row and then selected the window of min to $min+height$. I compiled the slices together but in the end it did not look much different then when I did a normal overlay. \\
-\\
-As mentioned above, I thought about using correlation and matching up the top points between two images but my results were not reliable enough for that. I thought about whether I could use another method to find points and then match them up but when I noticed that the straight overlay produces the most matches, I decided to stick with that. Additionally, due to the variations in the fibers, there does not seem to be a reliable way of detecting appropriate seed points to use for an alignment. \\
-\\
-Thus in the end I decided not to use any special alignment and just put the images together. 
+As mentioned above, I thought about using correlation and matching up the top points between two images but my results were not reliable enough for that. I thought about whether I could use another method to find points and then match them up but due to the variations in the fibers, there does not seem to be a reliable way of doing that. Thus in the end I decided not to use any special alignment and just put the images together. 
 
 \subsection{Displaying the Data Set}
 
